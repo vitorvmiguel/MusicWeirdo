@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PlayerActivity"
-                android:screenOrientation="portrait">
+        <activity
+            android:name=".PlayerActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,10 +19,9 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".services.PlayerService">
+        <service android:name=".services.PlayerService"></service>
 
-        </service>
+        <activity android:name=".NotificationActivity"></activity>
     </application>
 
 </manifest>

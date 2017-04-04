@@ -17,6 +17,10 @@ import vm.android.musicweirdo.PlayerActivity;
 import vm.android.musicweirdo.R;
 import vm.android.musicweirdo.data.Track;
 
+/**
+ * TrackListAdapter is the adapter that inflates the track_list layout into a list view
+ * */
+
 public class TrackListAdapter extends ArrayAdapter<Track> {
     private static final String TAG = TrackListAdapter.class.getSimpleName();
     private Context mContext;

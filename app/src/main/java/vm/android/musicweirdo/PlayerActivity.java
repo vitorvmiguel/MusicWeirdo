@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +20,23 @@ import java.util.List;
 import vm.android.musicweirdo.adapters.TrackListAdapter;
 import vm.android.musicweirdo.data.Track;
 import vm.android.musicweirdo.services.PlayerService;
-
+/**
+ * PlayerActivity is the MainActivity of the application handling the list view with all songs
+ * together with the player controls, is implementing onClickListener and onItemClickListener,
+ * for handling click events in the buttons and in the list.
+ * */
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
 
     private static final String TAG = PlayerActivity.class.getSimpleName();
 
+    // variables controlling the service and the list of songs
     private PlayerService mPlayerService;
     private boolean mIsBound = false;
     private static ArrayList<Integer> mPlayList = new ArrayList<>();
     private static List<Track> mTrackList = new ArrayList<>();
 
+    // views from the layout
     private Button mBtnPlay;
     private Button mBtnPause;
     private Button mBtnStop;
@@ -37,11 +44,13 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private Button mBtnNext;
     private ListView listView;
 
+    // static methods for the adapter and the service accessing the song list
     public static ArrayList<Integer> getmPlayList() { return mPlayList; }
     public static List<Track> getmTrackList() {
         return mTrackList;
     }
 
+    // service binding definition
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         @Override
@@ -57,10 +66,16 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
     };
 
+    // activity lifecycle onCreate method creates the views and setup the playlist
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        if (savedInstanceState != null) {
+            String message = savedInstanceState.getString("message");
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
 
         setPlayList();
 
@@ -86,6 +101,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    // activity lifecycle onStart bind the service to the activity
     @Override
     protected void onStart() {
         super.onStart();
@@ -94,6 +110,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    // activity lifecycle onStop unbind the service from the activity
     @Override
     protected void onStop() {
         super.onStop();
@@ -103,18 +120,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean("ServiceState", mIsBound);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mIsBound = savedInstanceState.getBoolean("ServiceState");
-    }
-
+    // activity lifecycle onDestroy clear the song list, unbind and terminate the service
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -127,6 +133,21 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // service state control
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean("ServiceState", mIsBound);
+        savedInstanceState.putAll(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mIsBound = savedInstanceState.getBoolean("ServiceState");
+    }
+
+    // interface onClick handling the buttons
     @Override
     public void onClick(View v) {
 
@@ -155,6 +176,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    // interface onItemClick handling the list view clicks
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(PlayerActivity.TAG,"Item " + position + " Clicked");
@@ -164,6 +186,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // setPlayList is the method used to setup the playlist for the songs
     private void setPlayList() {
         int[] rawValues = {
                 R.raw.bensoundbrazilsamba,
@@ -183,11 +206,20 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 "Indonesia",
                 "Brazil"
         };
+        String [] descriptions = {
+                "Samba is a Brazilian musical genre and dance style, with its roots in Africa via the West African slave trade religious particularly of Angola and African traditions.",
+                "Country music is a genre of American popular originated Southern States in the 1920s music that in the United",
+                "The music of India includes multiple varieties of folk music, pop, and Indian classical music. India's classical music tradition, including Hindustani music and Carnatic, has a history spanning millennia and developed over several eras",
+                "The music of Iceland includes vibrant folk and pop traditions. Well-known artists from Iceland include medieval music group Voces Thules, alternative rock band The Sugarcubes, singers Björk and Emiliana Torrini, post- rock band Sigur Rós and indie folk/indie pop band Of Monsters and Men",
+                "The Music of South Korea has evolved over the course of the decades since the end of the Korean War, and has its roots in the music of the Korean people, who have inhabited the Korean peninsula for over a millennium. Contemporary South Korean music can be divided into three different categories: Traditional Korean folk music, popular music, or K- pop, and Western- influenced non-popular music",
+                "The music of Indonesia demonstrates its cultural diversity, the local musical creativity, as well as subsequent foreign musical influences that shaped contemporary music scenes of Indonesia. Nearly thousands Indonesian having its own cultural and artistic history and character Nearly of islands",
+                "Samba is a Brazilian musical genre and dance style, with its roots in Africa via the West African slave trade religious particularly of Angola"
+        };
 
         for (int i = 0; i < rawValues.length; i++) {
             this.mPlayList.add(rawValues[i]);
             this.mTrackList.add(new Track(this.getResources().getResourceEntryName(rawValues[i]),
-                    countryList[i],"description",rawValues[i]));
+                    countryList[i],descriptions[i],rawValues[i]));
         }
     }
 }

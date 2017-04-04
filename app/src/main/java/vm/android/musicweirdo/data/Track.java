@@ -1,7 +1,8 @@
 package vm.android.musicweirdo.data;
 
 /**
- * Created by vitormiguel on 04/04/17.
+ * Track is a data class used to define the songs files, storing the information into an object,
+ * basically just have the necessary assignment properties, constructor, getters and setters
  */
 
 public class Track {
