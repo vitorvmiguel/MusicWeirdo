@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/layout_player_activity"
+    tools:context="vm.android.musicweirdo.PlayerActivity">
+
+    <ListView
+        android:id="@+id/track_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8" />
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:gravity="center_vertical">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_elapsed_time"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="00:00" />-->
+
+        <!--<SeekBar-->
+            <!--android:id="@+id/seekBar"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="6" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_remaining_time"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="00:00" />-->
+    <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/btn_prev_player"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/black_prev"/>
+
+        <Button
+            android:id="@+id/btn_stop_player"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/black_stop"/>
+
+        <Button
+            android:id="@+id/btn_play_player"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/black_play"/>
+
+        <Button
+            android:id="@+id/btn_pause_player"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/black_pause" />
+
+        <Button
+            android:id="@+id/btn_next_player"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/black_next"/>
+    </LinearLayout>
+
+</LinearLayout>
