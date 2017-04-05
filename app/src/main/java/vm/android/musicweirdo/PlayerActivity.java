@@ -72,14 +72,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        if (savedInstanceState != null) {
-            String message = savedInstanceState.getString("message");
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        }
-
         setPlayList();
-
-        this.listView = (ListView) findViewById(R.id.track_list_view);
 
         this.mBtnPlay = (Button) findViewById(R.id.btn_play_player);
         this.mBtnPlay.setOnClickListener(this);
@@ -96,6 +89,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         this.mBtnNext = (Button) findViewById(R.id.btn_next_player);
         this.mBtnNext.setOnClickListener(this);
 
+        this.listView = (ListView) findViewById(R.id.track_list_view);
         this.listView.setAdapter(new TrackListAdapter(this,0,this.mTrackList));
         this.listView.setOnItemClickListener(this);
 
@@ -110,41 +104,17 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    // activity lifecycle onStop unbind the service from the activity
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mIsBound) {
-            unbindService(serviceConnection);
-            mIsBound = false;
-        }
-    }
-
     // activity lifecycle onDestroy clear the song list, unbind and terminate the service
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mTrackList.clear();
 
-        if (mIsBound) {
+        if (isFinishing()) {
             unbindService(serviceConnection);
             mIsBound = false;
             mPlayerService.stopSelf();
         }
-    }
-
-    // service state control
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBoolean("ServiceState", mIsBound);
-        savedInstanceState.putAll(savedInstanceState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mIsBound = savedInstanceState.getBoolean("ServiceState");
     }
 
     // interface onClick handling the buttons
